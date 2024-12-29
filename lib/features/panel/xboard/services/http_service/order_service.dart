@@ -38,16 +38,19 @@ class OrderService {
   Future<Map<String, dynamic>> createOrder(String accessToken, int planId, String period) async {
     final result = await _httpService.postRequest(
       "/api/v1/user/order/save",
-      {"plan_id": planId.toString(), "period": period},
+      {
+        "plan_id": planId.toString(), // 确保 plan_id 以字符串形式传递
+        "period": period,             // 确保 period 是一个非空字符串
+      },
       headers: {'Authorization': accessToken},
     );
-
+  
+    // 检查 result 是否包含 "data"
     if (result["data"] == null) {
       throw Exception("Order creation failed: No data received");
     }
-
-    return {
-      "orderId": result["data"], // 返回订单号作为 Map 的一部分
-    };
+  
+    return {"orderId": result["data"]};
   }
+
 }
