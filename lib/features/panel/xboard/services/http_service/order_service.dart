@@ -41,12 +41,13 @@ class OrderService {
       {"plan_id": planId.toString(), "period": period},
       headers: {'Authorization': accessToken},
     );
-  
+
     if (result["data"] == null) {
       throw Exception("Order creation failed: No data received");
     }
-  
-    return {"orderId": result["data"]}; // 返回 Map 类型
-  }
 
+    return {
+      "orderId": result["data"], // 返回订单号作为 Map 的一部分
+    };
+  }
 }
