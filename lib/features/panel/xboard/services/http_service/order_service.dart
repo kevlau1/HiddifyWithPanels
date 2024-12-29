@@ -35,12 +35,17 @@ class OrderService {
     );
   }
 
-  Future<Map<String, dynamic>> createOrder(
-      String accessToken, int planId, String period) async {
-    return await _httpService.postRequest(
-      "/api/v1/user/order/save",
-      {"plan_id": planId.toString(), "period": period},
-      headers: {'Authorization': accessToken},
-    );
+Future<String> createOrder(String accessToken, int planId, String period) async {
+  final result = await _httpService.postRequest(
+    "/api/v1/user/order/save",
+    {"plan_id": planId.toString(), "period": period},
+    headers: {'Authorization': accessToken},
+  );
+
+  if (result["data"] == null) {
+    throw Exception("Order creation failed: No data received");
   }
+
+  return result["data"] as String; 
+}
 }
